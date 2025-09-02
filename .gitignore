@@ -1,0 +1,46 @@
+# ===== Compilação =====
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+
+# ===== Configurações locais =====
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ===== IDEs =====
+.vs/
+.idea/
+.ionide/
+
+# ===== Pacotes NuGet (restaurados no build) =====
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+
+# ===== Arquivos temporários =====
+*.cache
+*.pdb
+*.tmp
+*.bak
+*.dbmdl
+*.log
+
+# ===== Testes =====
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# ===== Publicação =====
+*.Publish.xml
+*.pubxml
+*.publishproj
+
+# ===== Configurações de ambiente =====
+appsettings.Development.json
+appsettings.Local.json
