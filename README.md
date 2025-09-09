@@ -1,6 +1,8 @@
 # Construtor de Árvore Binária a partir de Array
 
-Este projeto contém uma implementação em **C#** de uma **árvore binária** construída a partir de um array de inteiros. A árvore é construída de forma que cada nó contenha o maior valor do subarray correspondente, e os elementos à esquerda e à direita do maior valor formam as subárvores esquerda e direita, respectivamente.
+Este projeto contém uma implementação em **C#** de uma **árvore binária** construída a partir de um array de inteiros. A árvore é construída de forma que cada nó contenha o maior valor do subarray correspondente, e os elementos à esquerda e à direita do maior valor formam as subárvores esquerda e direita, respectivamente.  
+
+A construção agora é **otimizada em O(n)** usando uma **pilha**, garantindo eficiência mesmo para arrays grandes, mantendo a mesma estrutura da versão recursiva original.
 
 ---
 
@@ -13,12 +15,11 @@ Este projeto contém uma implementação em **C#** de uma **árvore binária** c
 Representa um nó da árvore.
 
 * **Propriedades**
-
   * `Valor` → valor inteiro armazenado no nó.
   * `Esquerda` → referência ao filho esquerdo.
   * `Direita` → referência ao filho direito.
-* **Métodos**
 
+* **Métodos**
   * `DefinirFilhos(No esquerda, No direita)` → define os nós filhos do nó atual.
   * `Imprimir(string prefixo = "", bool ehUltimoFilho = true)` → imprime a árvore de forma hierárquica no console.
 
@@ -27,10 +28,8 @@ Representa um nó da árvore.
 Classe estática responsável por construir a árvore a partir de um array.
 
 * **Métodos**
-
-  * `ConstruirDaRaiz(int[] array)` → ponto de entrada para construção da árvore.
-  * `Construir(int[] array, int inicio, int fim)` → método recursivo que constrói a árvore.
-  * `EncontrarIndiceDoMaior(int[] array, int inicio, int fim)` → retorna o índice do maior elemento em um subarray.
+  * `ConstruirDaRaiz(int[] array)` → ponto de entrada para construção da árvore; utiliza **pilha para construir a árvore em O(n)**.
+  * Mantém a lógica de Maximum Binary Tree, garantindo que cada nó seja o maior de seu subarray.
 
 #### `Programa`
 
@@ -92,7 +91,7 @@ Array de entrada: [7, 5, 13, 9, 1, 6, 4, 3]
 
 ## Observações
 
-* Esta implementação assume que todos os elementos do array são distintos.
+* Esta implementação agora usa pilha para construir a árvore em tempo linear O(n).
 * A impressão da árvore é feita de forma **visual**, usando caracteres especiais (`└─`, `├─`, `│`) para representar a hierarquia.
 * Pode ser facilmente adaptada para diferentes tipos de dados ou estratégias de construção de árvore.
 

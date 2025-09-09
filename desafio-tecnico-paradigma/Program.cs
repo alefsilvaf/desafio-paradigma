@@ -1,6 +1,5 @@
 using System;
-using System.Linq;
-
+using System.Collections.Generic;
 
 public class No
 {
@@ -13,9 +12,6 @@ public class No
         Valor = valor;
     }
 
-    /// <summary>
-    /// Define os nós filhos de um nó.
-    /// </summary>
     public void DefinirFilhos(No esquerda, No direita)
     {
         Esquerda = esquerda;
@@ -27,18 +23,8 @@ public class No
         Console.WriteLine(prefixo + (ehUltimoFilho ? "└─ " : "├─ ") + Valor);
 
         var proximoPrefixo = prefixo + (ehUltimoFilho ? "   " : "│  ");
-        var temFilhoEsquerdo = Esquerda != null;
-        var temFilhoDireito = Direita != null;
-
-        if (temFilhoDireito)
-        {
-            Direita.Imprimir(proximoPrefixo, !temFilhoEsquerdo);
-        }
-
-        if (temFilhoEsquerdo)
-        {
-            Esquerda.Imprimir(proximoPrefixo, true);
-        }
+        if (Direita != null) Direita.Imprimir(proximoPrefixo, Esquerda == null);
+        if (Esquerda != null) Esquerda.Imprimir(proximoPrefixo, true);
     }
 }
 
@@ -46,53 +32,56 @@ public static class ConstrutorDeArvore
 {
     public static No ConstruirDaRaiz(int[] array)
     {
-        return Construir(array, 0, array.Length - 1);
-    }
-
-    private static No Construir(int[] array, int inicio, int fim)
-    {
-        if (inicio > fim)
+        if (array == null || array.Length == 0)
         {
-            return null;
+            throw new ArgumentException("Array não pode ser nulo ou vazio.", nameof(array));
+
         }
 
-        var indiceDoMaior = EncontrarIndiceDoMaior(array, inicio, fim);
-        var raiz = new No(array[indiceDoMaior]);
+        Stack<No> pilha = new Stack<No>();
 
-        var subArvoreEsquerda = Construir(array, inicio, indiceDoMaior - 1);
-        var subArvoreDireita = Construir(array, indiceDoMaior + 1, fim);
-        raiz.DefinirFilhos(subArvoreEsquerda, subArvoreDireita);
-
-        return raiz;
-    }
-
-    private static int EncontrarIndiceDoMaior(int[] array, int inicio, int fim)
-    {
-        var indiceDoMaior = inicio;
-        for (int i = inicio + 1; i <= fim; i++)
+        foreach (var valor in array)
         {
-            if (array[i] > array[indiceDoMaior])
+            No noAtual = new No(valor);
+
+            while (pilha.Count > 0 && pilha.Peek().Valor < valor)
             {
-                indiceDoMaior = i;
+                No menor = pilha.Pop();
+                noAtual.DefinirFilhos(menor, noAtual.Direita);
             }
+
+            if (pilha.Count > 0)
+            {
+                No topo = pilha.Peek();
+                topo.DefinirFilhos(topo.Esquerda, noAtual);
+            }
+
+            pilha.Push(noAtual);
         }
-        return indiceDoMaior;
+
+        while (pilha.Count > 1)
+        {
+            pilha.Pop();
+
+        }
+
+        return pilha.Pop();
     }
 }
 
 public class Programa
 {
-    public static void Main(string[] args)
+    public static void Main()
     {
-        Console.WriteLine("--- Cenário 1 ---");
         int[] cenario1 = { 3, 2, 1, 6, 0, 5 };
+        Console.WriteLine("--- Cenário 1 ---");
         var arvore1 = ConstrutorDeArvore.ConstruirDaRaiz(cenario1);
         Console.WriteLine($"Array de entrada: [{string.Join(", ", cenario1)}]");
         Console.WriteLine("Árvore de saída:");
         arvore1.Imprimir();
 
-        Console.WriteLine("\n--- Cenário 2 ---");
         int[] cenario2 = { 7, 5, 13, 9, 1, 6, 3 };
+        Console.WriteLine("\n--- Cenário 2 ---");
         var arvore2 = ConstrutorDeArvore.ConstruirDaRaiz(cenario2);
         Console.WriteLine($"Array de entrada: [{string.Join(", ", cenario2)}]");
         Console.WriteLine("Árvore de saída:");
